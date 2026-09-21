@@ -8,16 +8,39 @@ function readColor(name: string, fallback: string) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
-function Shield() {
-  const group = useRef<Group>(null);
-  const [colors, setColors] = useState({ blue: "#29A8F0", navy: "#1B2A6B", orange: "#F7941D", cyan: "#5CC8FF" });
+type SceneColors = {
+  blue: string;
+  navy: string;
+  orange: string;
+  cyan: string;
+};
+
+const fallbackColors: SceneColors = {
+  blue: "#29A8F0",
+  navy: "#1B2A6B",
+  orange: "#F7941D",
+  cyan: "#5CC8FF",
+};
+
+function useSceneColors() {
+  const [colors, setColors] = useState<SceneColors>(fallbackColors);
   useEffect(() => {
-    const update = () => setColors({ blue: readColor("--brand-blue", "#29A8F0"), navy: readColor("--brand-navy", "#1B2A6B"), orange: readColor("--brand-orange", "#F7941D"), cyan: readColor("--brand-cyan", "#5CC8FF") });
+    const update = () => setColors({
+      blue: readColor("--brand-blue", fallbackColors.blue),
+      navy: readColor("--brand-navy", fallbackColors.navy),
+      orange: readColor("--brand-orange", fallbackColors.orange),
+      cyan: readColor("--brand-cyan", fallbackColors.cyan),
+    });
     update();
     const observer = new MutationObserver(update);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme"] });
     return () => observer.disconnect();
   }, []);
+  return colors;
+}
+
+function Shield({ colors }: { colors: SceneColors }) {
+  const group = useRef<Group>(null);
   useFrame((state) => {
     if (!group.current) return;
     group.current.rotation.y = state.pointer.x * 0.25;
@@ -38,18 +61,18 @@ function Shield() {
       </Float>
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[2.15, 0.025, 12, 160]} />
-        <meshStandardMaterial color="#FF7A00" emissive="#FF7A00" emissiveIntensity={0.7} />
+        <meshStandardMaterial color={colors.orange} emissive={colors.orange} emissiveIntensity={0.7} />
       </mesh>
       <mesh rotation={[1.1, 0.5, 0.2]}>
         <torusGeometry args={[1.85, 0.018, 12, 160]} />
         <meshStandardMaterial color={colors.cyan} emissive={colors.blue} emissiveIntensity={0.55} />
       </mesh>
-      {cubes.map((cube, index) => <DataCube key={index} position={[cube.x, cube.y, cube.z]} />)}
+      {cubes.map((cube, index) => <DataCube key={index} colors={colors} position={[cube.x, cube.y, cube.z]} />)}
     </group>
   );
 }
 
-function DataCube({ position }: { position: [number, number, number] }) {
+function DataCube({ position, colors }: { position: [number, number, number]; colors: SceneColors }) {
   const mesh = useRef<Mesh>(null);
   useFrame((_, delta) => {
     if (!mesh.current) return;
@@ -60,12 +83,13 @@ function DataCube({ position }: { position: [number, number, number] }) {
 }
 
 export default function ShieldScene() {
+  const colors = useSceneColors();
   return (
     <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 45 }} gl={{ antialias: true, alpha: true }}>
       <ambientLight intensity={0.8} />
       <directionalLight position={[3, 4, 5]} intensity={2} />
       <pointLight position={[-3, -2, 3]} color={colors.blue} intensity={2.4} />
-      <Shield />
+      <Shield colors={colors} />
       <Environment preset="city" />
     </Canvas>
   );
