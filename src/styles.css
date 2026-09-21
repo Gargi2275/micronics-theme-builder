@@ -222,3 +222,7 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
 }
+
+@utility donut-chart {
+  background: conic-gradient(var(--brand-blue) 0 42%, var(--brand-orange) 42% 70%, var(--chart-3) 70% 86%, var(--chart-4) 86% 100%);
+}

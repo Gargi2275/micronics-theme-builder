@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAppData } from "@/lib/useAppData";
-import { addMedia, deleteContent, deleteLead, deleteMedia, exportCsv, updateLead, updateSettings, updateUsers, upsertContent } from "@/services/content";
-import { type AppData, type BaseItem, type ContentType, type EditableItem, type Status } from "@/data/mock";
+import { addMedia, deleteContent, deleteLead, deleteMedia, exportCsv, updateLead, updateSettings, updateUsers, upsertContent, type EditableItem } from "@/services/content";
+import { type AppData, type BaseItem, type ContentType, type Status } from "@/data/mock";
 import { cn } from "@/lib/utils";
 
 const groups: { type: ContentType; label: string }[] = [
@@ -23,7 +23,7 @@ export function DashboardView() {
 }
 
 function ChartMock() {
-  return <div className="grid gap-6 lg:grid-cols-[1.4fr_.8fr]"><div className="rounded-2xl border border-border bg-card p-5 shadow-card"><h2 className="font-display text-xl font-black">Leads over time</h2><svg viewBox="0 0 640 220" className="mt-5 h-64 w-full"><path d="M20 180 C120 120 160 160 240 92 S390 110 460 56 S565 82 620 34" fill="none" stroke="var(--brand-blue)" strokeWidth="8" strokeLinecap="round"/><path d="M20 180 C120 120 160 160 240 92 S390 110 460 56 S565 82 620 34 L620 210 L20 210Z" fill="var(--primary-soft)" opacity=".75"/></svg></div><div className="rounded-2xl border border-border bg-card p-5 shadow-card"><h2 className="font-display text-xl font-black">Leads by type</h2><div className="mt-8 aspect-square rounded-full" style={{ background: "conic-gradient(var(--brand-blue) 0 42%, var(--brand-orange) 42% 70%, var(--chart-3) 70% 86%, var(--chart-4) 86% 100%)" }}><div className="grid h-full place-items-center rounded-full border-[34px] border-card"><span className="font-display text-3xl font-black">100%</span></div></div></div></div>;
+  return <div className="grid gap-6 lg:grid-cols-[1.4fr_.8fr]"><div className="rounded-2xl border border-border bg-card p-5 shadow-card"><h2 className="font-display text-xl font-black">Leads over time</h2><svg viewBox="0 0 640 220" className="mt-5 h-64 w-full"><path d="M20 180 C120 120 160 160 240 92 S390 110 460 56 S565 82 620 34" fill="none" stroke="var(--brand-blue)" strokeWidth="8" strokeLinecap="round"/><path d="M20 180 C120 120 160 160 240 92 S390 110 460 56 S565 82 620 34 L620 210 L20 210Z" fill="var(--primary-soft)" opacity=".75"/></svg></div><div className="rounded-2xl border border-border bg-card p-5 shadow-card"><h2 className="font-display text-xl font-black">Leads by type</h2><div className="donut-chart mt-8 aspect-square rounded-full"><div className="grid h-full place-items-center rounded-full border-[34px] border-card"><span className="font-display text-3xl font-black">100%</span></div></div></div></div>;
 }
 
 export function ContentManager({ type = "products" as ContentType }: { type?: ContentType }) {
