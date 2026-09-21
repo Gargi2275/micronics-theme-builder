@@ -32,11 +32,11 @@ import { Route as AdminMediaRouteImport } from './routes/admin.media'
 import { Route as AdminNewsletterRouteImport } from './routes/admin.newsletter'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
-import { Route as BackupRouteImport } from './routes/backup.'
-import { Route as ProductsRouteImport } from './routes/products.'
-import { Route as ResourcesRouteImport } from './routes/resources.'
-import { Route as ServicesRouteImport } from './routes/services.'
-import { Route as SolutionsRouteImport } from './routes/solutions.'
+import { Route as BackupSlugRouteImport } from './routes/backup.$slug'
+import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as ResourcesSlugRouteImport } from './routes/resources.$slug'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as SolutionsSlugRouteImport } from './routes/solutions.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -153,29 +153,29 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AdminRoute,
 } as any)
-const BackupRoute = BackupRouteImport.update({
-  id: '/backup/',
-  path: '/backup/',
+const BackupSlugRoute = BackupSlugRouteImport.update({
+  id: '/backup/$slug',
+  path: '/backup/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/',
-  path: '/',
+const ProductsSlugRoute = ProductsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => ProductsRoute,
 } as any)
-const ResourcesRoute = ResourcesRouteImport.update({
-  id: '/',
-  path: '/',
+const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => ResourcesRoute,
 } as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/',
-  path: '/',
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => ServicesRoute,
 } as any)
-const SolutionsRoute = SolutionsRouteImport.update({
-  id: '/',
-  path: '/',
+const SolutionsSlugRoute = SolutionsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => SolutionsRoute,
 } as any)
 
@@ -194,11 +194,6 @@ export interface FileRoutesByFullPath {
   '/solutions': typeof SolutionsRouteWithChildren
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
-  '/backup/': typeof BackupRoute
-  '/products/': typeof ProductsRoute
-  '/resources/': typeof ResourcesRoute
-  '/services/': typeof ServicesRoute
-  '/solutions/': typeof SolutionsRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/hero-slides': typeof AdminHeroSlidesRoute
@@ -208,6 +203,11 @@ export interface FileRoutesByFullPath {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/backup/$slug': typeof BackupSlugRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/solutions/$slug': typeof SolutionsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -218,13 +218,12 @@ export interface FileRoutesByTo {
   '/free-trial': typeof FreeTrialRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/services': typeof ServicesRouteWithChildren
+  '/solutions': typeof SolutionsRouteWithChildren
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
-  '/backup': typeof BackupRoute
-  '/products': typeof ProductsRoute
-  '/resources': typeof ResourcesRoute
-  '/services': typeof ServicesRoute
-  '/solutions': typeof SolutionsRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/hero-slides': typeof AdminHeroSlidesRoute
@@ -234,6 +233,11 @@ export interface FileRoutesByTo {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/backup/$slug': typeof BackupSlugRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/solutions/$slug': typeof SolutionsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -251,11 +255,6 @@ export interface FileRoutesById {
   '/solutions': typeof SolutionsRouteWithChildren
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
-  '/backup/': typeof BackupRoute
-  '/products/': typeof ProductsRoute
-  '/resources/': typeof ResourcesRoute
-  '/services/': typeof ServicesRoute
-  '/solutions/': typeof SolutionsRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/content': typeof AdminContentRoute
   '/admin/hero-slides': typeof AdminHeroSlidesRoute
@@ -265,6 +264,11 @@ export interface FileRoutesById {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
+  '/backup/$slug': typeof BackupSlugRoute
+  '/products/$slug': typeof ProductsSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/solutions/$slug': typeof SolutionsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -283,11 +287,6 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/support'
     | '/terms'
-    | '/backup/'
-    | '/products/'
-    | '/resources/'
-    | '/services/'
-    | '/solutions/'
     | '/admin/activity'
     | '/admin/content'
     | '/admin/hero-slides'
@@ -297,6 +296,11 @@ export interface FileRouteTypes {
     | '/admin/newsletter'
     | '/admin/settings'
     | '/admin/users'
+    | '/backup/$slug'
+    | '/products/$slug'
+    | '/resources/$slug'
+    | '/services/$slug'
+    | '/solutions/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -307,13 +311,12 @@ export interface FileRouteTypes {
     | '/free-trial'
     | '/pricing'
     | '/privacy'
-    | '/support'
-    | '/terms'
-    | '/backup'
     | '/products'
     | '/resources'
     | '/services'
     | '/solutions'
+    | '/support'
+    | '/terms'
     | '/admin/activity'
     | '/admin/content'
     | '/admin/hero-slides'
@@ -323,6 +326,11 @@ export interface FileRouteTypes {
     | '/admin/newsletter'
     | '/admin/settings'
     | '/admin/users'
+    | '/backup/$slug'
+    | '/products/$slug'
+    | '/resources/$slug'
+    | '/services/$slug'
+    | '/solutions/$slug'
   id:
     | '__root__'
     | '/'
@@ -339,11 +347,6 @@ export interface FileRouteTypes {
     | '/solutions'
     | '/support'
     | '/terms'
-    | '/backup/'
-    | '/products/'
-    | '/resources/'
-    | '/services/'
-    | '/solutions/'
     | '/admin/activity'
     | '/admin/content'
     | '/admin/hero-slides'
@@ -353,6 +356,11 @@ export interface FileRouteTypes {
     | '/admin/newsletter'
     | '/admin/settings'
     | '/admin/users'
+    | '/backup/$slug'
+    | '/products/$slug'
+    | '/resources/$slug'
+    | '/services/$slug'
+    | '/solutions/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -370,7 +378,7 @@ export interface RootRouteChildren {
   SolutionsRoute: typeof SolutionsRouteWithChildren
   SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
-  BackupRoute: typeof BackupRoute
+  BackupSlugRoute: typeof BackupSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -536,39 +544,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/backup/': {
-      id: '/backup/'
-      path: '/backup'
-      fullPath: '/backup/'
-      preLoaderRoute: typeof BackupRouteImport
+    '/backup/$slug': {
+      id: '/backup/$slug'
+      path: '/backup/$slug'
+      fullPath: '/backup/$slug'
+      preLoaderRoute: typeof BackupSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/': {
-      id: '/products/'
-      path: '/'
-      fullPath: '/products/'
-      preLoaderRoute: typeof ProductsRouteImport
+    '/products/$slug': {
+      id: '/products/$slug'
+      path: '/$slug'
+      fullPath: '/products/$slug'
+      preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof ProductsRoute
     }
-    '/resources/': {
-      id: '/resources/'
-      path: '/'
-      fullPath: '/resources/'
-      preLoaderRoute: typeof ResourcesRouteImport
+    '/resources/$slug': {
+      id: '/resources/$slug'
+      path: '/$slug'
+      fullPath: '/resources/$slug'
+      preLoaderRoute: typeof ResourcesSlugRouteImport
       parentRoute: typeof ResourcesRoute
     }
-    '/services/': {
-      id: '/services/'
-      path: '/'
-      fullPath: '/services/'
-      preLoaderRoute: typeof ServicesRouteImport
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
       parentRoute: typeof ServicesRoute
     }
-    '/solutions/': {
-      id: '/solutions/'
-      path: '/'
-      fullPath: '/solutions/'
-      preLoaderRoute: typeof SolutionsRouteImport
+    '/solutions/$slug': {
+      id: '/solutions/$slug'
+      path: '/$slug'
+      fullPath: '/solutions/$slug'
+      preLoaderRoute: typeof SolutionsSlugRouteImport
       parentRoute: typeof SolutionsRoute
     }
   }
@@ -601,11 +609,11 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface ProductsRouteChildren {
-  ProductsRoute: typeof ProductsRoute
+  ProductsSlugRoute: typeof ProductsSlugRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
-  ProductsRoute: ProductsRoute,
+  ProductsSlugRoute: ProductsSlugRoute,
 }
 
 const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
@@ -613,11 +621,11 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
 )
 
 interface ResourcesRouteChildren {
-  ResourcesRoute: typeof ResourcesRoute
+  ResourcesSlugRoute: typeof ResourcesSlugRoute
 }
 
 const ResourcesRouteChildren: ResourcesRouteChildren = {
-  ResourcesRoute: ResourcesRoute,
+  ResourcesSlugRoute: ResourcesSlugRoute,
 }
 
 const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
@@ -625,11 +633,11 @@ const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
 )
 
 interface ServicesRouteChildren {
-  ServicesRoute: typeof ServicesRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
 }
 
 const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesRoute: ServicesRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
 }
 
 const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
@@ -637,11 +645,11 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 )
 
 interface SolutionsRouteChildren {
-  SolutionsRoute: typeof SolutionsRoute
+  SolutionsSlugRoute: typeof SolutionsSlugRoute
 }
 
 const SolutionsRouteChildren: SolutionsRouteChildren = {
-  SolutionsRoute: SolutionsRoute,
+  SolutionsSlugRoute: SolutionsSlugRoute,
 }
 
 const SolutionsRouteWithChildren = SolutionsRoute._addFileChildren(
@@ -663,7 +671,7 @@ const rootRouteChildren: RootRouteChildren = {
   SolutionsRoute: SolutionsRouteWithChildren,
   SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
-  BackupRoute: BackupRoute,
+  BackupSlugRoute: BackupSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
