@@ -74,10 +74,11 @@ export function ActivityManager() {
   return <AdminTable rows={data.activity} columns={["actor", "action", "target", "createdAt"]} title="Activity log" />;
 }
 
-function AdminTable<T extends { id: string } & Record<string, unknown>>({ rows, columns, title, actions }: { rows: T[]; columns: string[]; title?: string; actions?: (row: T) => React.ReactNode }) {
+function AdminTable<T extends { id: string }>({ rows, columns, title, actions }: { rows: T[]; columns: string[]; title?: string; actions?: (row: T) => React.ReactNode }) {
   const [sort, setSort] = useState(columns[0] ?? "id");
-  const sorted = [...rows].sort((a, b) => String(a[sort] ?? "").localeCompare(String(b[sort] ?? ""))).slice(0, 12);
-  return <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">{title && <h2 className="border-b border-border p-5 font-display text-xl font-black">{title}</h2>}<Table><TableHeader><TableRow>{columns.map((column) => <TableHead key={column}><button className="font-bold capitalize" onClick={() => setSort(column)}>{column.replace(/([A-Z])/g, " $1")}</button></TableHead>)}{actions && <TableHead>Actions</TableHead>}</TableRow></TableHeader><TableBody>{sorted.length === 0 ? <TableRow><TableCell colSpan={columns.length + 1} className="py-10 text-center text-muted-foreground">No records yet.</TableCell></TableRow> : sorted.map((row) => <TableRow key={row.id}>{columns.map((column) => <TableCell key={column} className="max-w-[240px] truncate">{String(row[column] ?? "")}</TableCell>)}{actions && <TableCell><div className="flex items-center gap-2">{actions(row)}</div></TableCell>}</TableRow>)}</TableBody></Table></div>;
+  const readValue = (row: T, column: string) => row[column as keyof T];
+  const sorted = [...rows].sort((a, b) => String(readValue(a, sort) ?? "").localeCompare(String(readValue(b, sort) ?? ""))).slice(0, 12);
+  return <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">{title && <h2 className="border-b border-border p-5 font-display text-xl font-black">{title}</h2>}<Table><TableHeader><TableRow>{columns.map((column) => <TableHead key={column}><button className="font-bold capitalize" onClick={() => setSort(column)}>{column.replace(/([A-Z])/g, " $1")}</button></TableHead>)}{actions && <TableHead>Actions</TableHead>}</TableRow></TableHeader><TableBody>{sorted.length === 0 ? <TableRow><TableCell colSpan={columns.length + 1} className="py-10 text-center text-muted-foreground">No records yet.</TableCell></TableRow> : sorted.map((row) => <TableRow key={row.id}>{columns.map((column) => <TableCell key={column} className="max-w-[240px] truncate">{String(readValue(row, column) ?? "")}</TableCell>)}{actions && <TableCell><div className="flex items-center gap-2">{actions(row)}</div></TableCell>}</TableRow>)}</TableBody></Table></div>;
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {

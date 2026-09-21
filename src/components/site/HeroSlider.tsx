@@ -75,7 +75,7 @@ export function HeroSlider() {
             <motion.div key={current.id} initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }} transition={{ duration: 0.55 }}>
               <h1 className="font-display text-5xl font-black leading-[1.02] tracking-normal text-hero-foreground sm:text-7xl lg:text-8xl">
                 {current.headline.split(" ").map((word, index) => (
-                  <motion.span key={`${word}-${index}`} className={word.toLowerCase().includes(current.keyword.toLowerCase()) ? "gradient-text inline-block" : "inline-block"} initial={reduce ? false : { opacity: 0, y: 24 }} animate={reduce ? undefined : { opacity: 1, y: 0 }} transition={{ delay: index * 0.045 }}>
+                  <motion.span key={`${word}-${index}`} className={word.toLowerCase().includes(current.keyword.toLowerCase()) ? "gradient-text inline-block" : "inline-block"} initial={reduce ? false : { opacity: 0, y: 24 }} animate={reduce ? false : { opacity: 1, y: 0 }} transition={{ delay: index * 0.045 }}>
                     {word}{" "}
                   </motion.span>
                 ))}

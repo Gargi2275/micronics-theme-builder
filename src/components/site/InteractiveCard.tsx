@@ -14,7 +14,7 @@ export function InteractiveCard({ children, className }: { children: React.React
       ref={ref}
       className={cn("group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-card transition-shadow duration-300 hover:shadow-elevated", className)}
       style={{ backgroundImage: background }}
-      whileHover={reduce ? undefined : { y: -8, rotateX: 1.2, rotateY: -1.2 }}
+      {...(!reduce ? { whileHover: { y: -8, rotateX: 1.2, rotateY: -1.2 } } : {})}
       onMouseMove={(event) => {
         if (reduce) return;
         const bounds = ref.current?.getBoundingClientRect();

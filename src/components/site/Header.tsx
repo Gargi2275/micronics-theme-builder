@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
+import { ChevronDown, Menu, X, ArrowUpRight, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/site/Logo";
@@ -13,8 +13,8 @@ const nav = [
   { label: "Solutions", to: "/solutions", menu: "solutions" },
   { label: "Features", to: "/features", menu: "features" },
   { label: "Services", to: "/services", menu: "services" },
-  { label: "Pricing", to: "/pricing" },
-  { label: "Support", to: "/support" },
+  { label: "Pricing", to: "/pricing", menu: undefined },
+  { label: "Support", to: "/support", menu: undefined },
 ] as const;
 
 export function Header() {
@@ -47,13 +47,16 @@ export function Header() {
                   <div className="grid grid-cols-2 gap-3">
                     {menus[item.menu].map((entry) => {
                       const Icon = iconMap[entry.icon] ?? ArrowUpRight;
-                      const to = item.menu === "services" ? "/services/$slug" : item.menu === "solutions" ? "/solutions/$slug" : "/features";
                       return item.menu === "features" ? (
                         <Link key={entry.id} to="/features" className="rounded-xl p-3 transition-colors hover:bg-accent">
                           <MenuItem icon={Icon} title={entry.title} text={entry.shortDescription} />
                         </Link>
+                      ) : item.menu === "services" ? (
+                        <Link key={entry.id} to="/services/$slug" params={{ slug: entry.slug }} className="rounded-xl p-3 transition-colors hover:bg-accent">
+                          <MenuItem icon={Icon} title={entry.title} text={entry.shortDescription} />
+                        </Link>
                       ) : (
-                        <Link key={entry.id} to={to} params={{ slug: entry.slug }} className="rounded-xl p-3 transition-colors hover:bg-accent">
+                        <Link key={entry.id} to="/solutions/$slug" params={{ slug: entry.slug }} className="rounded-xl p-3 transition-colors hover:bg-accent">
                           <MenuItem icon={Icon} title={entry.title} text={entry.shortDescription} />
                         </Link>
                       );
@@ -88,7 +91,7 @@ export function Header() {
   );
 }
 
-function MenuItem({ icon: Icon, title, text }: { icon: React.ElementType; title: string; text: string }) {
+function MenuItem({ icon: Icon, title, text }: { icon: LucideIcon; title: string; text: string }) {
   return (
     <div className="flex gap-3">
       <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary"><Icon className="size-5" /></span>
