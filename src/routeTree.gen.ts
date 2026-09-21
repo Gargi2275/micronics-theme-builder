@@ -10,33 +10,246 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FeaturesRouteImport } from './routes/features'
+import { Route as FreeTrialRouteImport } from './routes/free-trial'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SolutionsRouteImport } from './routes/solutions'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as BackupRouteImport } from './routes/backup.'
+import { Route as ProductsRouteImport } from './routes/products.'
+import { Route as ResourcesRouteImport } from './routes/resources.'
+import { Route as ServicesRouteImport } from './routes/services.'
+import { Route as SolutionsRouteImport } from './routes/solutions.'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeaturesRoute = FeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreeTrialRoute = FreeTrialRouteImport.update({
+  id: '/free-trial',
+  path: '/free-trial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolutionsRoute = SolutionsRouteImport.update({
+  id: '/solutions',
+  path: '/solutions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackupRoute = BackupRouteImport.update({
+  id: '/backup/',
+  path: '/backup/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProductsRoute,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ResourcesRoute,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ServicesRoute,
+} as any)
+const SolutionsRoute = SolutionsRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SolutionsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/features': typeof FeaturesRoute
+  '/free-trial': typeof FreeTrialRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/services': typeof ServicesRouteWithChildren
+  '/solutions': typeof SolutionsRouteWithChildren
+  '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
+  '/backup/': typeof BackupRoute
+  '/products/': typeof ProductsRoute
+  '/resources/': typeof ResourcesRoute
+  '/services/': typeof ServicesRoute
+  '/solutions/': typeof SolutionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/features': typeof FeaturesRoute
+  '/free-trial': typeof FreeTrialRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
+  '/backup': typeof BackupRoute
+  '/products': typeof ProductsRoute
+  '/resources': typeof ResourcesRoute
+  '/services': typeof ServicesRoute
+  '/solutions': typeof SolutionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
+  '/features': typeof FeaturesRoute
+  '/free-trial': typeof FreeTrialRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/services': typeof ServicesRouteWithChildren
+  '/solutions': typeof SolutionsRouteWithChildren
+  '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
+  '/backup/': typeof BackupRoute
+  '/products/': typeof ProductsRoute
+  '/resources/': typeof ResourcesRoute
+  '/services/': typeof ServicesRoute
+  '/solutions/': typeof SolutionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/features'
+    | '/free-trial'
+    | '/pricing'
+    | '/privacy'
+    | '/products'
+    | '/resources'
+    | '/services'
+    | '/solutions'
+    | '/support'
+    | '/terms'
+    | '/backup/'
+    | '/products/'
+    | '/resources/'
+    | '/services/'
+    | '/solutions/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/features'
+    | '/free-trial'
+    | '/pricing'
+    | '/privacy'
+    | '/support'
+    | '/terms'
+    | '/backup'
+    | '/products'
+    | '/resources'
+    | '/services'
+    | '/solutions'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/features'
+    | '/free-trial'
+    | '/pricing'
+    | '/privacy'
+    | '/products'
+    | '/resources'
+    | '/services'
+    | '/solutions'
+    | '/support'
+    | '/terms'
+    | '/backup/'
+    | '/products/'
+    | '/resources/'
+    | '/services/'
+    | '/solutions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
+  FeaturesRoute: typeof FeaturesRoute
+  FreeTrialRoute: typeof FreeTrialRoute
+  PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ProductsRoute: typeof ProductsRouteWithChildren
+  ResourcesRoute: typeof ResourcesRouteWithChildren
+  ServicesRoute: typeof ServicesRouteWithChildren
+  SolutionsRoute: typeof SolutionsRouteWithChildren
+  SupportRoute: typeof SupportRoute
+  TermsRoute: typeof TermsRoute
+  BackupRoute: typeof BackupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +261,191 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/features': {
+      id: '/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof FeaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/free-trial': {
+      id: '/free-trial'
+      path: '/free-trial'
+      fullPath: '/free-trial'
+      preLoaderRoute: typeof FreeTrialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solutions': {
+      id: '/solutions'
+      path: '/solutions'
+      fullPath: '/solutions'
+      preLoaderRoute: typeof SolutionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backup/': {
+      id: '/backup/'
+      path: '/backup'
+      fullPath: '/backup/'
+      preLoaderRoute: typeof BackupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/': {
+      id: '/products/'
+      path: '/'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof ProductsRoute
+    }
+    '/resources/': {
+      id: '/resources/'
+      path: '/'
+      fullPath: '/resources/'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof ResourcesRoute
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof ServicesRoute
+    }
+    '/solutions/': {
+      id: '/solutions/'
+      path: '/'
+      fullPath: '/solutions/'
+      preLoaderRoute: typeof SolutionsRouteImport
+      parentRoute: typeof SolutionsRoute
+    }
   }
 }
 
+interface ProductsRouteChildren {
+  ProductsRoute: typeof ProductsRoute
+}
+
+const ProductsRouteChildren: ProductsRouteChildren = {
+  ProductsRoute: ProductsRoute,
+}
+
+const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
+  ProductsRouteChildren,
+)
+
+interface ResourcesRouteChildren {
+  ResourcesRoute: typeof ResourcesRoute
+}
+
+const ResourcesRouteChildren: ResourcesRouteChildren = {
+  ResourcesRoute: ResourcesRoute,
+}
+
+const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
+  ResourcesRouteChildren,
+)
+
+interface ServicesRouteChildren {
+  ServicesRoute: typeof ServicesRoute
+}
+
+const ServicesRouteChildren: ServicesRouteChildren = {
+  ServicesRoute: ServicesRoute,
+}
+
+const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
+  ServicesRouteChildren,
+)
+
+interface SolutionsRouteChildren {
+  SolutionsRoute: typeof SolutionsRoute
+}
+
+const SolutionsRouteChildren: SolutionsRouteChildren = {
+  SolutionsRoute: SolutionsRoute,
+}
+
+const SolutionsRouteWithChildren = SolutionsRoute._addFileChildren(
+  SolutionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
+  FeaturesRoute: FeaturesRoute,
+  FreeTrialRoute: FreeTrialRoute,
+  PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
+  ProductsRoute: ProductsRouteWithChildren,
+  ResourcesRoute: ResourcesRouteWithChildren,
+  ServicesRoute: ServicesRouteWithChildren,
+  SolutionsRoute: SolutionsRouteWithChildren,
+  SupportRoute: SupportRoute,
+  TermsRoute: TermsRoute,
+  BackupRoute: BackupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

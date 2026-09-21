@@ -3,7 +3,7 @@ import { DetailPage } from "@/components/site/ListPages";
 import { getAppData } from "@/services/content";
 import { seo } from "@/lib/seo";
 
-export const Route = createFileRoute("/resources/$slug")({
+export const Route = createFileRoute("/resources/")({
   loader: ({ params }) => {
     const item = getAppData().posts.find((post) => post.slug === params.slug);
     if (!item) throw notFound();
