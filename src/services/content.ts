@@ -19,25 +19,36 @@ function canStore() {
   return typeof window !== "undefined" && Boolean(window.localStorage);
 }
 
+const serverSnapshot: AppData = cloneInitial();
+let clientSnapshot: AppData | null = null;
+
+export function getServerAppData(): AppData {
+  return serverSnapshot;
+}
+
 export function getAppData(): AppData {
-  if (!canStore()) return cloneInitial();
+  if (!canStore()) return serverSnapshot;
+  if (clientSnapshot !== null) return clientSnapshot;
+
   const raw = window.localStorage.getItem(STORAGE_KEY);
   if (!raw) {
-    const seeded = cloneInitial();
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
-    return seeded;
+    clientSnapshot = cloneInitial();
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(clientSnapshot));
+    return clientSnapshot;
   }
   try {
     const parsed = JSON.parse(raw) as Partial<AppData>;
-    return { ...cloneInitial(), ...parsed } as AppData;
+    clientSnapshot = { ...cloneInitial(), ...parsed } as AppData;
+    return clientSnapshot;
   } catch {
-    const seeded = cloneInitial();
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
-    return seeded;
+    clientSnapshot = cloneInitial();
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(clientSnapshot));
+    return clientSnapshot;
   }
 }
 
 export function saveAppData(data: AppData) {
+  clientSnapshot = data;
   if (!canStore()) return;
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
@@ -46,12 +57,27 @@ export function saveAppData(data: AppData) {
 export function subscribeToData(callback: () => void) {
   if (!canStore()) return () => undefined;
   const storageHandler = (event: StorageEvent) => {
-    if (event.key === STORAGE_KEY) callback();
+    if (event.key === STORAGE_KEY) {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        try {
+          clientSnapshot = { ...cloneInitial(), ...JSON.parse(raw) };
+        } catch {
+          clientSnapshot = cloneInitial();
+        }
+      } else {
+        clientSnapshot = cloneInitial();
+      }
+      callback();
+    }
   };
-  window.addEventListener(CHANGE_EVENT, callback);
+  const changeHandler = () => {
+    callback();
+  };
+  window.addEventListener(CHANGE_EVENT, changeHandler);
   window.addEventListener("storage", storageHandler);
   return () => {
-    window.removeEventListener(CHANGE_EVENT, callback);
+    window.removeEventListener(CHANGE_EVENT, changeHandler);
     window.removeEventListener("storage", storageHandler);
   };
 }
