@@ -5,6 +5,28 @@ import { ContentManager } from "@/components/admin/AdminTables";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/content")({
-  head: () => seo({ title: "Content Admin | Micronics Devlon", description: "Manage products, services, solutions, features, platforms, pricing, FAQs, testimonials and posts locally." }),
-  component: () => <AdminGuard><AdminShell title="Content" description="Search, sort, add, edit and delete all public site content in local storage."><ContentManager /></AdminShell></AdminGuard>,
+  validateSearch: (search: Record<string, unknown>) => ({
+    tab: (search["tab"] as any) || "solutions",
+  }),
+  head: () =>
+    seo({
+      title: "Content Admin | Micronics Devlon",
+      description:
+        "Manage products, services, solutions, features, platforms, pricing, FAQs, testimonials and posts locally.",
+    }),
+  component: ContentAdminRoute,
 });
+
+function ContentAdminRoute() {
+  const search = Route.useSearch();
+  return (
+    <AdminGuard>
+      <AdminShell
+        title="Content Management Console"
+        description="Add, edit, filter, and delete all Solutions, Features, Services, and catalog data."
+      >
+        <ContentManager key={search.tab} defaultType={search.tab} />
+      </AdminShell>
+    </AdminGuard>
+  );
+}

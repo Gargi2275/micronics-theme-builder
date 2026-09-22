@@ -1,8 +1,9 @@
 import { initialData, type AppData, type ContentType, type Lead, type NewsletterSubscriber, type Status } from "@/data/mock";
 
-const STORAGE_KEY = "micronics-devlon-data-v1";
+const STORAGE_KEY = "micronics-devlon-data-v2";
 const AUTH_KEY = "micronics-devlon-admin-auth";
 const CHANGE_EVENT = "micronics-data-change";
+
 
 export type EditableCollection = AppData[ContentType];
 export type EditableItem = EditableCollection[number];
@@ -101,7 +102,7 @@ export function upsertContent(type: ContentType, input: Partial<EditableItem> & 
     status: input.status ?? base?.status ?? "published",
     order: input.order ?? base?.order ?? collection.length + 1,
     seoTitle: input.seoTitle ?? base?.seoTitle ?? `${input.title} | Micronics Devlon`,
-    seoDescription: input.seoDescription ?? base?.seoDescription ?? input.shortDescription ?? "Micronics Devlon content.",
+    seoDescription: input.seoDescription ?? base?.seoDescription ?? (input as any).shortDescription ?? "Micronics Devlon content.",
     createdAt: base?.createdAt ?? now,
     updatedAt: now,
   } as EditableItem;

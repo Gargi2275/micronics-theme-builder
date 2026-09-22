@@ -3,33 +3,85 @@ import { cn } from "@/lib/utils";
 
 export function BrandMark({ className }: { className?: string }) {
   return (
-    <svg className={cn("h-10 w-10 shrink-0", className)} viewBox="0 0 64 64" role="img" aria-label="Micronics Devlon logo">
+    <svg
+      className={cn("h-9 w-9 shrink-0 transition-transform duration-300 group-hover:scale-105", className)}
+      viewBox="0 0 64 64"
+      role="img"
+      aria-label="Micronics Devlon logo"
+    >
       <defs>
         <linearGradient id="md-blue" x1="10" x2="54" y1="52" y2="12">
-          <stop stopColor="var(--brand-blue)" />
-          <stop offset="1" stopColor="var(--brand-cyan)" />
+          <stop stopColor="#3b82f6" />
+          <stop offset="1" stopColor="#6366f1" />
         </linearGradient>
         <linearGradient id="md-orange" x1="7" x2="58" y1="52" y2="8">
-          <stop stopColor="var(--brand-orange)" />
-          <stop offset="1" stopColor="var(--brand-orange-hot)" />
+          <stop stopColor="#f59e0b" />
+          <stop offset="1" stopColor="#ea580c" />
         </linearGradient>
       </defs>
-      <path fill="none" stroke="url(#md-orange)" strokeWidth="5.5" strokeLinecap="round" d="M14 44a24 24 0 1 1 35 1" />
-      <path fill="url(#md-orange)" d="M48 18.5 58 16l-2.3 10.1Z" />
-      <path fill="var(--brand-navy)" d="M15 47V19h9.1l7.9 13 7.9-13H49v28h-8V31.4L34.3 42h-4.6L23 31.4V47Z" />
-      <path fill="url(#md-blue)" d="M23.5 19h5.2l3.3 6.1 3.3-6.1h5.2L32 34Z" />
+      <circle cx="32" cy="32" r="30" fill="none" stroke="url(#md-blue)" strokeWidth="3" opacity="0.4" />
+      <path
+        fill="none"
+        stroke="url(#md-orange)"
+        strokeWidth="5"
+        strokeLinecap="round"
+        d="M14 44a22 22 0 1 1 35 1"
+      />
+      <path fill="url(#md-orange)" d="M47 18.5 57 16l-2.3 9.5Z" />
+      <path
+        fill="currentColor"
+        d="M17 46V21h7.5l6.5 11 6.5-11H45v25h-6.5V32.5L33 41.5h-4L23.5 32.5V46Z"
+      />
+      <path fill="url(#md-blue)" d="M24 21h4.5l2.8 5.5 2.8-5.5H38L31.3 33.5Z" />
     </svg>
   );
 }
 
-export function Logo({ compact = false, to = "/", className }: { compact?: boolean; to?: string; className?: string }) {
+export function Logo({
+  compact = false,
+  to = "/",
+  className,
+  variant = "default",
+}: {
+  compact?: boolean;
+  to?: string;
+  className?: string;
+  variant?: "default" | "light" | "white";
+}) {
+  const isWhite = variant === "white" || className?.includes("text-white");
+
   return (
-    <Link to={to} className={cn("group inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", className)}>
-      <BrandMark />
+    <Link
+      to={to}
+      className={cn(
+        "group inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl py-1 px-1",
+        className
+      )}
+    >
+      {isWhite ? <BrandMark className="text-white" /> : <BrandMark />}
       {!compact && (
-        <span className="flex flex-col leading-none">
-          <span className="font-display text-lg font-extrabold tracking-normal text-foreground">Micronics Devlon</span>
-          <span className="mt-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Data protection</span>
+        <span className="flex flex-col leading-tight">
+          <span
+            className={cn(
+              "font-display text-lg font-black tracking-tight transition-colors",
+              isWhite
+                ? "text-white group-hover:text-amber-300"
+                : "text-foreground group-hover:text-primary"
+            )}
+          >
+            Micronics{" "}
+            <span className={isWhite ? "text-amber-400 font-bold" : "text-primary font-bold"}>
+              Devlon
+            </span>
+          </span>
+          <span
+            className={cn(
+              "text-[10px] font-bold uppercase tracking-widest",
+              isWhite ? "text-slate-300" : "text-muted-foreground"
+            )}
+          >
+            Data Protection
+          </span>
         </span>
       )}
     </Link>

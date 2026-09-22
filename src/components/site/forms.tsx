@@ -37,11 +37,11 @@ export function LeadForm({ type = "contact", compact = false }: { type?: "contac
       }}
     >
       <div className={compact ? "grid gap-4" : "grid gap-4 sm:grid-cols-2"}>
-        <Field label="Name" error={errors.name}><Input value={values.name} onChange={(event) => setValues({ ...values, name: event.target.value })} placeholder="Your name" /></Field>
-        <Field label="Work email" error={errors.email}><Input value={values.email} onChange={(event) => setValues({ ...values, email: event.target.value })} placeholder="you@company.com" /></Field>
+        <Field label="Name" error={errors["name"]}><Input value={values.name} onChange={(event) => setValues({ ...values, name: event.target.value })} placeholder="Your name" /></Field>
+        <Field label="Work email" error={errors["email"]}><Input value={values.email} onChange={(event) => setValues({ ...values, email: event.target.value })} placeholder="you@company.com" /></Field>
       </div>
-      <Field label="Company" error={errors.company}><Input value={values.company} onChange={(event) => setValues({ ...values, company: event.target.value })} placeholder="Company name" /></Field>
-      <Field label="Message" error={errors.message}><Textarea value={values.message} onChange={(event) => setValues({ ...values, message: event.target.value })} placeholder="Tell us what you need to protect" rows={compact ? 3 : 5} /></Field>
+      <Field label="Company" error={errors["company"]}><Input value={values.company} onChange={(event) => setValues({ ...values, company: event.target.value })} placeholder="Company name" /></Field>
+      <Field label="Message" error={errors["message"]}><Textarea value={values.message} onChange={(event) => setValues({ ...values, message: event.target.value })} placeholder="Tell us what you need to protect" rows={compact ? 3 : 5} /></Field>
       <Button type="submit" variant="orange" size="lg" className="w-full sm:w-fit">{label}<ArrowUpRight /></Button>
     </form>
   );
@@ -79,7 +79,7 @@ export function NewsletterForm() {
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
   return (
     <label className="grid gap-2 text-sm font-semibold text-foreground">
       {label}

@@ -33,7 +33,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const next = nextMode === "system" ? getPreferredTheme() : nextMode;
       setResolvedTheme(next);
       document.documentElement.classList.toggle("dark", next === "dark");
-      document.documentElement.dataset.theme = next;
+      document.documentElement.dataset["theme"] = next;
     };
     setModeState(nextMode);
     apply();
@@ -48,7 +48,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setModeState(nextMode);
     setResolvedTheme(next);
     document.documentElement.classList.toggle("dark", next === "dark");
-    document.documentElement.dataset.theme = next;
+    document.documentElement.dataset["theme"] = next;
   };
 
   const value = useMemo(

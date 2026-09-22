@@ -1,53 +1,278 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Bell, ChevronLeft, Database, FileText, GalleryHorizontalEnd, LayoutDashboard, LogOut, Menu, Search, Settings, ShieldCheck, Users, X } from "lucide-react";
+import {
+  Bell,
+  ChevronLeft,
+  Database,
+  ExternalLink,
+  FileText,
+  GalleryHorizontalEnd,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Search,
+  Settings,
+  ShieldCheck,
+  Sparkles,
+  Users,
+  X,
+  Layers,
+  Zap,
+  Boxes,
+  HelpCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/site/Logo";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
-import { logout } from "@/services/content";
+import { logout, getAppData } from "@/services/content";
 import { cn } from "@/lib/utils";
 
-const links = [
-  { label: "Dashboard", to: "/admin", icon: LayoutDashboard },
-  { label: "Hero slides", to: "/admin/hero-slides", icon: GalleryHorizontalEnd },
-  { label: "Content", to: "/admin/content", icon: FileText },
-  { label: "Leads", to: "/admin/leads", icon: Database },
-  { label: "Media", to: "/admin/media", icon: GalleryHorizontalEnd },
-  { label: "Settings", to: "/admin/settings", icon: Settings },
-  { label: "Users & roles", to: "/admin/users", icon: Users },
-  { label: "Activity", to: "/admin/activity", icon: ShieldCheck },
+const navItems = [
+  { label: "Dashboard", to: "/admin", icon: LayoutDashboard, badge: null },
+  { label: "Solutions", to: "/admin/content", icon: Layers, query: "solutions", badge: "30+" },
+  { label: "Features", to: "/admin/content", icon: Zap, query: "features", badge: "35+" },
+  { label: "Services", to: "/admin/content", icon: ShieldCheck, query: "services", badge: "10" },
+  { label: "Products", to: "/admin/content", icon: Boxes, query: "products", badge: "7" },
+  { label: "All Content", to: "/admin/content", icon: FileText, badge: null },
+  { label: "Hero Slides", to: "/admin/hero-slides", icon: GalleryHorizontalEnd, badge: null },
+  { label: "Leads & Inquiries", to: "/admin/leads", icon: Database, badge: "New" },
+  { label: "Media Library", to: "/admin/media", icon: GalleryHorizontalEnd, badge: null },
+  { label: "Users & Roles", to: "/admin/users", icon: Users, badge: null },
+  { label: "Settings", to: "/admin/settings", icon: Settings, badge: null },
+  { label: "Activity Log", to: "/admin/activity", icon: ShieldCheck, badge: null },
 ] as const;
 
-export function AdminShell({ children, title, description }: { children: React.ReactNode; title: string; description: string }) {
+export function AdminShell({
+  children,
+  title,
+  description,
+}: {
+  children: React.ReactNode;
+  title: string;
+  description: string;
+}) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const navigate = useNavigate();
-  const crumbs = useMemo(() => pathname.split("/").filter(Boolean).map((part) => part.replace(/-/g, " ")), [pathname]);
-  const nav = <nav className="grid gap-1 p-3">{links.map(({ label, to, icon: Icon }) => <Link key={to} to={to} className={cn("flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-bold text-admin-sidebar-foreground/72 transition-colors hover:bg-primary/25 hover:text-admin-sidebar-foreground", pathname === to && "bg-primary text-admin-sidebar-foreground")}><Icon className="size-5 shrink-0" />{!collapsed && <span>{label}</span>}</Link>)}</nav>;
+  const data = getAppData();
+
+  const crumbs = useMemo(
+    () => pathname.split("/").filter(Boolean).map((part) => part.replace(/-/g, " ")),
+    [pathname]
+  );
+
+  const handleLogout = () => {
+    logout();
+    navigate({ to: "/admin/login", replace: true });
+  };
+
+  const navContent = (
+    <div className="flex h-full flex-col justify-between">
+      <div className="p-3 space-y-1">
+        <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-admin-sidebar-foreground/50">
+          {!collapsed && "Management Console"}
+        </div>
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive =
+            pathname === item.to &&
+            (!("query" in item) || window.location.search.includes(item.query ?? ""));
+
+          const content = (
+            <>
+              <div className="flex items-center gap-3">
+                <Icon className="size-4 shrink-0 transition-transform group-hover:scale-110" />
+                {!collapsed && <span>{item.label}</span>}
+              </div>
+              {!collapsed && item.badge && (
+                <span
+                  className={cn(
+                    "rounded-full px-2 py-0.5 text-[10px] font-bold",
+                    item.badge === "New"
+                      ? "bg-accent text-accent-foreground"
+                      : "bg-white/10 text-admin-sidebar-foreground/80"
+                  )}
+                >
+                  {item.badge}
+                </span>
+              )}
+            </>
+          );
+
+          const className = cn(
+            "group flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-semibold text-admin-sidebar-foreground/75 transition-all hover:bg-primary/20 hover:text-admin-sidebar-foreground",
+            isActive && "bg-primary text-admin-sidebar-foreground font-bold shadow-sm"
+          );
+
+          if ("query" in item && item.query) {
+            return (
+              <Link
+                key={item.label}
+                to={item.to as any}
+                search={{ tab: item.query } as any}
+                className={className}
+              >
+                {content}
+              </Link>
+            );
+          }
+
+          return (
+            <Link
+              key={item.label}
+              to={item.to as any}
+              className={className}
+            >
+              {content}
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* User Info & Live Site Button */}
+      <div className="border-t border-white/10 p-3 space-y-2">
+        <Button
+          asChild
+          variant="glass"
+          size="sm"
+          className="w-full justify-start text-xs font-semibold text-admin-sidebar-foreground/80 border-white/10 bg-white/5 hover:bg-white/10 hover:text-white"
+        >
+          <Link to="/" target="_blank">
+            <ExternalLink className="size-3.5 mr-2 shrink-0" />
+            {!collapsed && <span>View Live Site</span>}
+          </Link>
+        </Button>
+
+        <div className="flex items-center justify-between rounded-xl bg-white/5 p-2 text-xs">
+          {!collapsed && (
+            <div className="min-w-0 pr-2">
+              <span className="block truncate font-bold text-admin-sidebar-foreground">
+                Admin Demo
+              </span>
+              <span className="block truncate text-[10px] text-admin-sidebar-foreground/50">
+                admin@micronicsdevlon.com
+              </span>
+            </div>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleLogout}
+            title="Sign out"
+            className="size-8 text-admin-sidebar-foreground hover:bg-destructive/20 hover:text-destructive shrink-0"
+          >
+            <LogOut className="size-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-secondary text-foreground lg:grid lg:grid-cols-[auto_1fr]">
-      <aside className={cn("fixed inset-y-0 left-0 z-50 hidden bg-admin-sidebar text-admin-sidebar-foreground shadow-elevated transition-all lg:block", collapsed ? "w-20" : "w-72")}> 
-        <div className="flex h-20 items-center justify-between border-b border-primary-foreground/10 px-4"><Logo compact={collapsed} to="/admin" /><Button variant="ghost" size="icon" onClick={() => setCollapsed((v) => !v)} className="text-admin-sidebar-foreground hover:bg-primary/20"><ChevronLeft className={cn("transition-transform", collapsed && "rotate-180")} /></Button></div>
-        {nav}
+    <div className="min-h-screen bg-background text-foreground flex">
+      {/* Desktop Sticky Sidebar */}
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 hidden flex-col border-r border-border/80 bg-admin-sidebar text-admin-sidebar-foreground shadow-2xl transition-all lg:flex",
+          collapsed ? "w-20" : "w-64"
+        )}
+      >
+        <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
+          <Logo compact={collapsed} to="/admin" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed((v) => !v)}
+            className="size-8 text-admin-sidebar-foreground hover:bg-white/10"
+          >
+            <ChevronLeft
+              className={cn("size-4 transition-transform", collapsed && "rotate-180")}
+            />
+          </Button>
+        </div>
+        <div className="flex-1 overflow-y-auto">{navContent}</div>
       </aside>
-      {mobileOpen && <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur lg:hidden"><div className="h-full w-80 bg-admin-sidebar text-admin-sidebar-foreground"><div className="flex h-20 items-center justify-between border-b border-primary-foreground/10 px-4"><Logo to="/admin" /><Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)} className="text-admin-sidebar-foreground"><X /></Button></div>{nav}</div></div>}
-      <div className={cn("min-w-0 transition-all", collapsed ? "lg:ml-20" : "lg:ml-72")}> 
-        <header className="sticky top-0 z-40 border-b border-border bg-background/88 backdrop-blur-xl">
-          <div className="flex h-20 items-center gap-4 px-4 sm:px-6 lg:px-8">
-            <Button variant="glass" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}><Menu /></Button>
-            <div className="hidden min-w-0 flex-1 items-center gap-2 rounded-full border border-border bg-card px-4 py-2 sm:flex"><Search className="size-4 text-muted-foreground" /><Input placeholder="Search demo content" className="h-8 border-0 p-0 shadow-none focus-visible:ring-0" /></div>
-            <ThemeToggle />
-            <Button variant="glass" size="icon" aria-label="Notifications"><Bell /></Button>
-            <Button variant="ghost" onClick={() => { logout(); navigate({ to: "/admin/login", replace: true }); }}><LogOut />Logout</Button>
+
+      {/* Mobile Drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md lg:hidden">
+          <div className="h-full w-72 bg-admin-sidebar text-admin-sidebar-foreground shadow-2xl flex flex-col">
+            <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
+              <Logo to="/admin" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileOpen(false)}
+                className="size-8 text-admin-sidebar-foreground"
+              >
+                <X className="size-5" />
+              </Button>
+            </div>
+            <div className="flex-1 overflow-y-auto">{navContent}</div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area - Full Bleed Width */}
+      <div
+        className={cn(
+          "min-w-0 flex-1 transition-all flex flex-col min-h-screen w-full",
+          collapsed ? "lg:pl-20" : "lg:pl-64"
+        )}
+      >
+        {/* Top Navbar */}
+        <header className="sticky top-0 z-40 border-b border-border/80 bg-background/95 backdrop-blur-xl">
+          <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 w-full">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="glass"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setMobileOpen(true)}
+              >
+                <Menu className="size-5" />
+              </Button>
+              <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+                <span>Admin Console</span>
+                <span>/</span>
+                <span className="capitalize text-foreground font-bold">
+                  {crumbs[crumbs.length - 1] || "Dashboard"}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1.5 text-xs text-muted-foreground">
+                <span className="flex size-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Live Storage Active</span>
+              </div>
+              <ThemeToggle />
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="hidden sm:inline-flex text-xs font-semibold"
+              >
+                <Link to="/" target="_blank">
+                  <ExternalLink className="size-3.5 mr-1.5" />
+                  Live Site
+                </Link>
+              </Button>
+            </div>
           </div>
         </header>
-        <main className="px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <p className="mb-2 text-sm font-bold capitalize text-muted-foreground">{crumbs.join(" / ") || "admin"}</p>
-            <h1 className="font-display text-4xl font-black tracking-normal text-foreground">{title}</h1>
-            <p className="mt-2 text-muted-foreground">{description}</p>
+
+        {/* Page Content Body - Full Width */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border/60 pb-6">
+            <div>
+              <h1 className="font-display text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+                {title}
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+            </div>
           </div>
           {children}
         </main>

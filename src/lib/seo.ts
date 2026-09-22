@@ -1,4 +1,12 @@
-export function seo({ title, description, image }: { title: string; description: string; image?: string }) {
+export function seo({
+  title,
+  description,
+  image,
+}: {
+  title: string;
+  description: string;
+  image?: string | undefined;
+}) {
   const meta = [
     { title },
     { name: "description", content: description },

@@ -6,5 +6,5 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/admin/hero-slides")({
   head: () => seo({ title: "Hero Slides Admin | Micronics Devlon", description: "Manage homepage hero slides locally for the Micronics Devlon demo." }),
-  component: () => <AdminGuard><AdminShell title="Hero slides" description="Edit slide images, headlines, CTAs, order and status."><ContentManager type="heroSlides" /></AdminShell></AdminGuard>,
+  component: () => <AdminGuard><AdminShell title="Hero slides" description="Edit slide images, headlines, CTAs, order and status."><ContentManager defaultType="heroSlides" /></AdminShell></AdminGuard>,
 });
